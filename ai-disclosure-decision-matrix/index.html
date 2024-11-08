@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+    <title>AI Disclosure Decision Matrix</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+	p { margin-bottom: 0; }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+            cursor: pointer;
+            vertical-align: top;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        .high { background-color: #ffcccc; }
+        .medium { background-color: #ffffcc; }
+        .low { background-color: #ccffcc; }
+        .selected { border: 3px solid #3498db; }
+        .example {
+            font-style: italic;
+            font-size: 0.8em;
+            color: #555;
+        }
+        #result {
+            font-weight: bold;
+            margin-top: 20px;
+            padding: 10px;
+            border: 2px solid #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+	#reset-wrapper {
+	    text-align: right;
+	}
+	#reset-wrapper button {
+	    padding: 1rem;
+	}
+    </style>
+</head>
+<body>
+    <h1>AI Disclosure Decision Matrix</h1>
+    <div id="result"></div>
+    <table id="matrix">
+        <tr>
+            <th>Criterion</th>
+            <th>High (Must Disclose)</th>
+            <th>Medium (Consider Disclosing)</th>
+            <th>Low (May Not Need Disclosure)</th>
+        </tr>
+        <tr>
+            <td>Agency</td>
+            <td class="high" onclick="selectCell(this)">AI makes autonomous decisions for the user
+                <p class="example">Example: AI-driven trading bot that executes trades without user intervention</p>
+            </td>
+            <td class="medium" onclick="selectCell(this)">AI provides suggestions, but user has final say
+                <p class="example">Example: AI-powered email response suggestions</p>
+            </td>
+            <td class="low" onclick="selectCell(this)">AI assists but doesn't make or suggest decisions
+                <p class="example">Example: AI-enhanced spell checker in a word processor</p>
+            </td>
+        </tr>
+        <tr>
+            <td>Creativity</td>
+            <td class="high" onclick="selectCell(this)">AI generates entire content or makes significant modifications
+                <p class="example">Example: AI-written news articles or blog posts</p>
+            </td>
+            <td class="medium" onclick="selectCell(this)">AI augments or partially modifies user-created content
+                <p class="example">Example: AI-assisted code completion in an IDE</p>
+            </td>
+            <td class="low" onclick="selectCell(this)">AI makes minimal or no changes to content
+                <p class="example">Example: AI-powered image resizing tool</p>
+            </td>
+        </tr>
+        <tr>
+            <td>Privacy</td>
+            <td class="high" onclick="selectCell(this)">AI collects or uses extensive personal or sensitive data
+                <p class="example">Example: AI-powered health diagnosis system using detailed medical records</p>
+            </td>
+            <td class="medium" onclick="selectCell(this)">AI uses some personal data, mostly non-sensitive
+                <p class="example">Example: Personalized movie recommendations based on viewing history</p>
+            </td>
+            <td class="low" onclick="selectCell(this)">AI uses minimal or no personal data
+                <p class="example">Example: AI-powered image recognition tool that doesn't store user images</p>
+            </td>
+        </tr>
+        <tr>
+            <td>Impact</td>
+            <td class="high" onclick="selectCell(this)">AI could significantly influence opinions or cause harm
+                <p class="example">Example: AI-curated news feed that could create filter bubbles</p>
+            </td>
+            <td class="medium" onclick="selectCell(this)">AI has moderate influence or potential for harm
+                <p class="example">Example: AI-suggested job listings in a job search platform</p>
+            </td>
+            <td class="low" onclick="selectCell(this)">AI has minimal influence or potential for harm
+                <p class="example">Example: AI-powered music recommendation system</p>
+            </td>
+        </tr>
+        <tr>
+            <td>Visibility</td>
+            <td class="high" onclick="selectCell(this)">AI's presence and role are not apparent to users
+                <p class="example">Example: AI-generated responses in a customer service chat, not disclosed as AI</p>
+            </td>
+            <td class="medium" onclick="selectCell(this)">AI's presence is somewhat apparent or disclosed
+                <p class="example">Example: AI-powered virtual assistant with partial explanation of its capabilities</p>
+            </td>
+            <td class="low" onclick="selectCell(this)">AI's presence and role are clear and obvious to users
+                <p class="example">Example: Clearly labeled AI chatbot for customer service</p>
+            </td>
+        </tr>
+        <tr>
+            <td>Integrity</td>
+            <td class="high" onclick="selectCell(this)">Significant legal or ethical concerns exist
+                <p class="example">Example: AI system for criminal sentencing recommendations</p>
+            </td>
+            <td class="medium" onclick="selectCell(this)">Some legal or ethical considerations need addressing
+                <p class="example">Example: AI-powered resume screening in hiring processes</p>
+            </td>
+            <td class="low" onclick="selectCell(this)">Minimal legal or ethical concerns
+                <p class="example">Example: AI-enhanced search algorithm in a website</p>
+            </td>
+        </tr>
+    </table>
+    <div id="reset-wrapper"><button onclick="resetSelections()">Reset Selections</button></div>
+    <script>
+        function selectCell(cell) {
+            // Remove 'selected' class from all cells in the same row
+            var row = cell.parentNode;
+            var cells = row.getElementsByTagName('td');
+            for (var i = 0; i < cells.length; i++) {
+                cells[i].classList.remove('selected');
+            }
+            // Add 'selected' class to the clicked cell
+            cell.classList.add('selected');
+            
+            // Automatically calculate disclosure after selection
+            calculateDisclosure();
+        }
+
+	function resetSelections(){
+	    let selectedCells = document.querySelectorAll('td.selected');
+            for (let i = 0; i < selectedCells.length; i++) {
+	        selectedCells[i].classList.remove('selected');
+	    }
+	    
+	    calculateDisclosure();
+	}
+
+        function calculateDisclosure() {
+            let highCount = 0;
+            let mediumCount = 0;
+            let lowCount = 0;
+
+            var selectedCells = document.getElementsByClassName('selected');
+            for (var i = 0; i < selectedCells.length; i++) {
+                if (selectedCells[i].classList.contains('high')) {
+                    highCount++;
+                } else if (selectedCells[i].classList.contains('medium')) {
+                    mediumCount++;
+                } else if (selectedCells[i].classList.contains('low')) {
+                    lowCount++;
+                }
+            }
+
+            const resultDiv = document.getElementById("result");
+            if (highCount > 0) {
+                resultDiv.textContent = "Recommendation: Must Disclose AI Use";
+                resultDiv.style.backgroundColor = "#ffcccc";
+            } else if (mediumCount > 0) {
+                resultDiv.textContent = "Recommendation: Consider Disclosing AI Use";
+                resultDiv.style.backgroundColor = "#ffffcc";
+            } else if (lowCount > 0) {
+                resultDiv.textContent = "Recommendation: May Not Need to Disclose AI Use";
+                resultDiv.style.backgroundColor = "#ccffcc";
+            } else {
+                resultDiv.textContent = "Please select a level for each criterion";
+                resultDiv.style.backgroundColor = "#ffffff";
+            }
+        }
+
+        // Initial calculation
+        calculateDisclosure();
+    </script>
+</body>
+</html>
