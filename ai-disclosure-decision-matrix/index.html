@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="min-height: 100vh; max-height: 100vh;">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,23 +7,41 @@
     <title>AI Disclosure Decision Matrix</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            min-height: 100vh;
+            max-height: 100vh;
+            max-width: 100%;
+        }
+        header {
+            background-color: #0a1621;
+            padding: 1rem;
+        }
+        main {
             color: #333;
-            max-width: 1200px;
+            font-family: Arial, sans-serif;
+            flex-grow: 1;
+            line-height: 1.6;
+            max-width: 100%;
             margin: 0 auto;
-            padding: 20px;
+            overflow-y: scroll;
         }
         h1 {
-            text-align: center;
             color: #2c3e50;
+            margin-top: 0;
+            padding: 0 0.5rem;
+            text-align: center;
+        }
+        .matrix-wrapper {
+            overflow-x: auto;
+            margin-bottom: 20px;
         }
         table {
-            width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
         }
-	p { margin-bottom: 0; }
+        p { margin-bottom: 0; }
         th, td {
             border: 1px solid #ddd;
             padding: 12px;
@@ -46,104 +64,112 @@
         }
         #result {
             font-weight: bold;
-            margin-top: 20px;
             padding: 10px;
             border: 2px solid #333;
             text-align: center;
-            margin-bottom: 20px;
+            margin: 1rem;
         }
-	#reset-wrapper {
-	    text-align: right;
-	}
-	#reset-wrapper button {
-	    padding: 1rem;
-	}
+        #reset-wrapper {
+            text-align: right;
+        }
+        #reset-wrapper button {
+            padding: 1rem;
+        }
     </style>
 </head>
 <body>
-    <h1>AI Disclosure Decision Matrix</h1>
-    <div id="result"></div>
-    <table id="matrix">
-        <tr>
-            <th>Criterion</th>
-            <th>High (Must Disclose)</th>
-            <th>Medium (Consider Disclosing)</th>
-            <th>Low (May Not Need Disclosure)</th>
-        </tr>
-        <tr>
-            <td>Agency</td>
-            <td class="high" onclick="selectCell(this)">AI makes autonomous decisions for the user
-                <p class="example">Example: AI-driven trading bot that executes trades without user intervention</p>
-            </td>
-            <td class="medium" onclick="selectCell(this)">AI provides suggestions, but user has final say
-                <p class="example">Example: AI-powered email response suggestions</p>
-            </td>
-            <td class="low" onclick="selectCell(this)">AI assists but doesn't make or suggest decisions
-                <p class="example">Example: AI-enhanced spell checker in a word processor</p>
-            </td>
-        </tr>
-        <tr>
-            <td>Creativity</td>
-            <td class="high" onclick="selectCell(this)">AI generates entire content or makes significant modifications
-                <p class="example">Example: AI-written news articles or blog posts</p>
-            </td>
-            <td class="medium" onclick="selectCell(this)">AI augments or partially modifies user-created content
-                <p class="example">Example: AI-assisted code completion in an IDE</p>
-            </td>
-            <td class="low" onclick="selectCell(this)">AI makes minimal or no changes to content
-                <p class="example">Example: AI-powered image resizing tool</p>
-            </td>
-        </tr>
-        <tr>
-            <td>Privacy</td>
-            <td class="high" onclick="selectCell(this)">AI collects or uses extensive personal or sensitive data
-                <p class="example">Example: AI-powered health diagnosis system using detailed medical records</p>
-            </td>
-            <td class="medium" onclick="selectCell(this)">AI uses some personal data, mostly non-sensitive
-                <p class="example">Example: Personalized movie recommendations based on viewing history</p>
-            </td>
-            <td class="low" onclick="selectCell(this)">AI uses minimal or no personal data
-                <p class="example">Example: AI-powered image recognition tool that doesn't store user images</p>
-            </td>
-        </tr>
-        <tr>
-            <td>Impact</td>
-            <td class="high" onclick="selectCell(this)">AI could significantly influence opinions or cause harm
-                <p class="example">Example: AI-curated news feed that could create filter bubbles</p>
-            </td>
-            <td class="medium" onclick="selectCell(this)">AI has moderate influence or potential for harm
-                <p class="example">Example: AI-suggested job listings in a job search platform</p>
-            </td>
-            <td class="low" onclick="selectCell(this)">AI has minimal influence or potential for harm
-                <p class="example">Example: AI-powered music recommendation system</p>
-            </td>
-        </tr>
-        <tr>
-            <td>Visibility</td>
-            <td class="high" onclick="selectCell(this)">AI's presence and role are not apparent to users
-                <p class="example">Example: AI-generated responses in a customer service chat, not disclosed as AI</p>
-            </td>
-            <td class="medium" onclick="selectCell(this)">AI's presence is somewhat apparent or disclosed
-                <p class="example">Example: AI-powered virtual assistant with partial explanation of its capabilities</p>
-            </td>
-            <td class="low" onclick="selectCell(this)">AI's presence and role are clear and obvious to users
-                <p class="example">Example: Clearly labeled AI chatbot for customer service</p>
-            </td>
-        </tr>
-        <tr>
-            <td>Integrity</td>
-            <td class="high" onclick="selectCell(this)">Significant legal or ethical concerns exist
-                <p class="example">Example: AI system for criminal sentencing recommendations</p>
-            </td>
-            <td class="medium" onclick="selectCell(this)">Some legal or ethical considerations need addressing
-                <p class="example">Example: AI-powered resume screening in hiring processes</p>
-            </td>
-            <td class="low" onclick="selectCell(this)">Minimal legal or ethical concerns
-                <p class="example">Example: AI-enhanced search algorithm in a website</p>
-            </td>
-        </tr>
-    </table>
-    <div id="reset-wrapper"><button onclick="resetSelections()">Reset Selections</button></div>
+    <header>
+        <a href="https://twinsunsolutions.com/">
+            <img src="/images/twin-sun-logo-white-text.png" alt="Twin Sun" height="40" width="171.467" />
+        </a>
+    </header>
+    <main>
+        <h1>AI Disclosure Decision Matrix</h1>
+        <div id="result"></div>
+        <div class="matrix-wrapper">
+            <table id="matrix">
+                <tr>
+                    <th>Criterion</th>
+                    <th>High (Must Disclose)</th>
+                    <th>Medium (Consider Disclosing)</th>
+                    <th>Low (May Not Need Disclosure)</th>
+                </tr>
+                <tr>
+                    <td>Agency</td>
+                    <td class="high" onclick="selectCell(this)">AI makes autonomous decisions for the user
+                        <p class="example">Example: AI-driven trading bot that executes trades without user intervention</p>
+                    </td>
+                    <td class="medium" onclick="selectCell(this)">AI provides suggestions, but user has final say
+                        <p class="example">Example: AI-powered email response suggestions</p>
+                    </td>
+                    <td class="low" onclick="selectCell(this)">AI assists but doesn't make or suggest decisions
+                        <p class="example">Example: AI-enhanced spell checker in a word processor</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Creativity</td>
+                    <td class="high" onclick="selectCell(this)">AI generates entire content or makes significant modifications
+                        <p class="example">Example: AI-written news articles or blog posts</p>
+                    </td>
+                    <td class="medium" onclick="selectCell(this)">AI augments or partially modifies user-created content
+                        <p class="example">Example: AI-assisted code completion in an IDE</p>
+                    </td>
+                    <td class="low" onclick="selectCell(this)">AI makes minimal or no changes to content
+                        <p class="example">Example: AI-powered image resizing tool</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Privacy</td>
+                    <td class="high" onclick="selectCell(this)">AI collects or uses extensive personal or sensitive data
+                        <p class="example">Example: AI-powered health diagnosis system using detailed medical records</p>
+                    </td>
+                    <td class="medium" onclick="selectCell(this)">AI uses some personal data, mostly non-sensitive
+                        <p class="example">Example: Personalized movie recommendations based on viewing history</p>
+                    </td>
+                    <td class="low" onclick="selectCell(this)">AI uses minimal or no personal data
+                        <p class="example">Example: AI-powered image recognition tool that doesn't store user images</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Impact</td>
+                    <td class="high" onclick="selectCell(this)">AI could significantly influence opinions or cause harm
+                        <p class="example">Example: AI-curated news feed that could create filter bubbles</p>
+                    </td>
+                    <td class="medium" onclick="selectCell(this)">AI has moderate influence or potential for harm
+                        <p class="example">Example: AI-suggested job listings in a job search platform</p>
+                    </td>
+                    <td class="low" onclick="selectCell(this)">AI has minimal influence or potential for harm
+                        <p class="example">Example: AI-powered music recommendation system</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Visibility</td>
+                    <td class="high" onclick="selectCell(this)">AI's presence and role are not apparent to users
+                        <p class="example">Example: AI-generated responses in a customer service chat, not disclosed as AI</p>
+                    </td>
+                    <td class="medium" onclick="selectCell(this)">AI's presence is somewhat apparent or disclosed
+                        <p class="example">Example: AI-powered virtual assistant with partial explanation of its capabilities</p>
+                    </td>
+                    <td class="low" onclick="selectCell(this)">AI's presence and role are clear and obvious to users
+                        <p class="example">Example: Clearly labeled AI chatbot for customer service</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Integrity</td>
+                    <td class="high" onclick="selectCell(this)">Significant legal or ethical concerns exist
+                        <p class="example">Example: AI system for criminal sentencing recommendations</p>
+                    </td>
+                    <td class="medium" onclick="selectCell(this)">Some legal or ethical considerations need addressing
+                        <p class="example">Example: AI-powered resume screening in hiring processes</p>
+                    </td>
+                    <td class="low" onclick="selectCell(this)">Minimal legal or ethical concerns
+                        <p class="example">Example: AI-enhanced search algorithm in a website</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="reset-wrapper"><button onclick="resetSelections()">Reset Selections</button></div>
+    </main>
     <script>
         function selectCell(cell) {
             // Remove 'selected' class from all cells in the same row
